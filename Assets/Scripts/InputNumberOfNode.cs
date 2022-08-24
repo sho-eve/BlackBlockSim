@@ -27,7 +27,7 @@ public class InputNumberOfNode : MonoBehaviour
         for(int i = 0; i < float.Parse(_inputNumberOfNode.text); i++) {
             GameObject block = Instantiate(_blockPrefab);
             block.transform.SetParent(_canvas.transform, false);
-            block.transform.position = new Vector3(Random.Range(0, 1490), Random.Range(0, 780), 0);
+            block.transform.localPosition = new Vector3(Random.Range(-960, 960), Random.Range(-540, 540), 0);
         }
     }
 
