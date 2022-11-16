@@ -1,21 +1,28 @@
 ﻿<Properties StartupConfiguration="{EF2E08AE-BAD0-F976-B03A-EE91EF104300}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LineSwitch.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Node.cs">
     <Files>
-      <File FileName="Assets/Scripts/Node.cs" Line="5" Column="22" />
-      <File FileName="Assets/Scripts/InputNumberOfNode.cs" Line="30" Column="50" />
-      <File FileName="Assets/Scripts/LineSwitch.cs" Line="29" Column="2" />
+      <File FileName="Assets/Scripts/Node.cs" Line="114" Column="96" />
+      <File FileName="Assets/Scripts/InputNumberOfNode.cs" Line="50" Column="3" />
+      <File FileName="Assets/Scripts/LineSwitch.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Server.cs" Line="17" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="BlackBlockSim" expanded="True" selected="True" />
+          <Node name="BlackBlockSim" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="Node.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="4d7ac070-c519-41b7-af1b-8ac01cf93db6" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="9d50e2cc-59ee-41da-bc3e-f7fd7a9f4f4f" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
