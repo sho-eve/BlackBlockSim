@@ -18,8 +18,8 @@ public class Node : MonoBehaviour, IPointerClickHandler {
 
 	float seconds = 0f;
 
-	Queue<GameObject> consensusQueue = new Queue<GameObject> ();
-	Queue<bool> boolQueue = new Queue<bool> ();
+	public Queue<GameObject> consensusQueue = new Queue<GameObject> ();
+	public Queue<bool> boolQueue = new Queue<bool> ();
 
 	public int numberOfStackToAble = 10;
 
@@ -29,7 +29,16 @@ public class Node : MonoBehaviour, IPointerClickHandler {
 
 	//マイニングの閾値
 	public float miningState;
-	float percentageMiningState = 100;
+	float percentageMiningState = 1000;
+
+	public int numberOfSuccessToConnect = 0; //要編集
+	public int numberOfTryingToConnect = 0;
+	public int numberOfGeneratingBlock = 0;
+
+	public float rateOfConnect;
+
+	public int numberOfSuccessToConnectInTenTrying = 0;
+	public float rateOfConnectInTenTrying;
 
 	// Start is called before the first frame update
 	void Start () {
@@ -40,19 +49,29 @@ public class Node : MonoBehaviour, IPointerClickHandler {
 		FixLevelCheat ();
 		RenderLineThisTo (serverNode);
 		cheatSlider = GetComponentInChildren<Slider> ();
+		childPanel.SetActive (false);
 	}
 
 	// Update is called once per frame
 	void Update () {
 		levelCheat = cheatSlider.value;
+
+		if (numberOfTryingToConnect != 0) {
+			rateOfConnect = (float)numberOfSuccessToConnect / (float)numberOfTryingToConnect;
+			rateOfConnectInTenTrying = (float)numberOfSuccessToConnectInTenTrying / 10;
+		}
+
 		seconds += Time.deltaTime;
 		if (seconds >= serverScript.GetComponent<Server> ().updateTime) {
 			if (simAct == true) {
 				int nodeNum = Random.Range (0, simNodes.Length - 1);
 
+				simNodes [nodeNum].GetComponent<Node> ().numberOfTryingToConnect++;
+
 				if (simNodesJudge [nodeNum] == true) {
 					RenderLineThisTo (simNodes [nodeNum]);
 					enqueueAndDequeue (simNodes [nodeNum]);
+					simNodes [nodeNum].GetComponent<Node> ().numberOfSuccessToConnect++;
 				} else {
 					print ("can't connect");
 				}
@@ -71,6 +90,7 @@ public class Node : MonoBehaviour, IPointerClickHandler {
 		if (consensusQueue.Count () > 0) {
 			if (mining (consensusQueue.Peek ()) == 1) {
 				broadcastList ();
+				otherNodeDeque ();
 				finishMiningObj ();
 			}
 		}
@@ -154,6 +174,7 @@ public class Node : MonoBehaviour, IPointerClickHandler {
 	int mining (GameObject obj) {
 		float hashValue = UnityEngine.Random.Range (0f, (float)simNodes.Length);
 		if (hashValue <= miningState) {
+			numberOfGeneratingBlock++;
 			float judgeCheat = Random.Range (0f, 1f);
 			if (obj.GetComponent<Node> ().levelCheat >= judgeCheat) {
 				for (int i = 0; i < simNodes.Length; i++) {
@@ -177,12 +198,32 @@ public class Node : MonoBehaviour, IPointerClickHandler {
 	void broadcastList () {
 		for (int i = 0; i < simNodes.Length; i++) {
 			simNodes [i].GetComponent<Node> ().simNodesJudge = simNodesJudge;
+
+		}
+		GameObject.FindGameObjectWithTag ("Server").GetComponent<ListControl> ().simNodesJudge = simNodesJudge;
+	}
+
+	void otherNodeDeque () {
+		for (int i = 0; i < simNodes.Length; i++) {
+			Queue<GameObject> broadcastQueue = new Queue<GameObject> ();
+			while (simNodes [i].GetComponent<Node> ().consensusQueue.Count > 0 && consensusQueue.Count > 0) {
+				if (simNodes [i].GetComponent<Node> ().consensusQueue.Peek () == consensusQueue.Peek ()) {
+					simNodes [i].GetComponent<Node> ().consensusQueue.Dequeue ();
+				} else {
+					broadcastQueue.Enqueue (simNodes [i].GetComponent<Node> ().consensusQueue.Dequeue ());
+				}
+			}
+
+			while (broadcastQueue.Count > 0) {
+				simNodes [i].GetComponent<Node> ().consensusQueue.Enqueue (broadcastQueue.Dequeue ());
+			}
 		}
 	}
 
 	void finishMiningObj () {
-		consensusQueue.Dequeue ();
+		if (consensusQueue.Count > 0) {
+			consensusQueue.Dequeue ();
+		}
 	}
-
 
 }

@@ -52,5 +52,6 @@ public class InputNumberOfNode : MonoBehaviour {
 		foreach (GameObject node in simNodesList) {
 			node.GetComponent<Node> ().Sim ();
 		}
+		GameObject.FindGameObjectWithTag ("Server").GetComponent<ListControl> ().getNodeList ();
 	}
 }
