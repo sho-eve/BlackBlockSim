@@ -30,6 +30,7 @@ public class InputNumberOfNode : MonoBehaviour {
 			block.name = ("Client Node " + (i + 1));
 			block.transform.SetParent (_canvas.transform, false);
 			block.transform.localPosition = new Vector3 (Random.Range (-960, 960), Random.Range (-540, 540), 0);
+			block.GetComponentInChildren<Slider> ().value = 0.001f * (float)i;
 		}
 		clickCheck = true;
 	}

@@ -37,8 +37,11 @@ public class Node : MonoBehaviour, IPointerClickHandler {
 
 	public float rateOfConnect;
 
-	public int numberOfSuccessToConnectInTenTrying = 0;
-	public float rateOfConnectInTenTrying;
+	public int numberOfSuccessToConnectInTenTrying = 1;
+	public float rateOfConnectInTenTrying = 1;
+
+	public bool addCSV = false;
+	public Text csv;
 
 	// Start is called before the first frame update
 	void Start () {
@@ -49,7 +52,8 @@ public class Node : MonoBehaviour, IPointerClickHandler {
 		FixLevelCheat ();
 		RenderLineThisTo (serverNode);
 		cheatSlider = GetComponentInChildren<Slider> ();
-		childPanel.SetActive (false);
+		//childPanel.SetActive (false);
+		csv = serverNode.GetComponentInChildren<Text> ();
 	}
 
 	// Update is called once per frame
@@ -74,6 +78,16 @@ public class Node : MonoBehaviour, IPointerClickHandler {
 					simNodes [nodeNum].GetComponent<Node> ().numberOfSuccessToConnect++;
 				} else {
 					print ("can't connect");
+					if (simNodes [nodeNum].GetComponent<Node> ().addCSV == false) {
+						csv.text += simNodes [nodeNum].GetComponent<Node> ().numberOfTryingToConnect + "," + simNodes [nodeNum].GetComponent<Node> ().levelCheat + "\n";
+						simNodes [nodeNum].GetComponent<Node> ().addCSV = true;
+					}
+					if (simNodes [nodeNum].GetComponent<Node> ().rateOfConnectInTenTrying > 0) {
+						simNodes [nodeNum].GetComponent<Node> ().rateOfConnectInTenTrying -= 0.1f;
+					}
+					if (simNodes [nodeNum].GetComponent<Node> ().rateOfConnectInTenTrying < 0) {
+						simNodes [nodeNum].GetComponent<Node> ().rateOfConnectInTenTrying = 0;
+					}
 				}
 
 
